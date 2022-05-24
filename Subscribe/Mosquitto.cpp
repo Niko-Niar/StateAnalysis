@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <mosquitto.h>
+#include <iostream>
 
 void my_message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message)
 {
@@ -22,16 +23,18 @@ void my_connect_callback(struct mosquitto* mosq, void* userdata, int result)
 	}
 	else {
 		fprintf(stderr, "Connect failed\n");
+		fprintf(stderr, "Сбой подключения\n");
 	}
 }
 
 void my_subscribe_callback(struct mosquitto* mosq, void* userdata, int mid, int qos_count, const int* granted_qos)
 {
-	printf("Successfully subscribed\n");// Вывод сообщения об успешном подключении
+	printf("Подключение прошло успешно\n");// Вывод сообщения об успешном подключении
 }
 
 int main(int argc, char* argv[])
 {
+	setlocale(LC_ALL, "Russian");
 	const char* host = "localhost";
 	int port = 1883;
 	int keepalive = 60;
@@ -43,7 +46,7 @@ int main(int argc, char* argv[])
 	mosq = mosquitto_new("1", clean_session, NULL);
 
 	if (!mosq) {
-		fprintf(stderr, "Error: Out of memory.\n");
+		fprintf(stderr, "Ошибка: Недостаточно памяти.\n");
 		return 1;
 	}
 	mosquitto_connect_callback_set(mosq, my_connect_callback);
@@ -51,7 +54,7 @@ int main(int argc, char* argv[])
 	mosquitto_subscribe_callback_set(mosq, my_subscribe_callback);
 
 	if (mosquitto_connect(mosq, host, port, keepalive)) {
-		fprintf(stderr, "Unable to connect.\n"); // Вывод ошибки о неудачной попытке подключения
+		fprintf(stderr, "Не удается подключиться.\n"); // Вывод ошибки о неудачной попытке подключения
 		return 1;
 	}
 
