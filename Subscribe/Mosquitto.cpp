@@ -22,7 +22,6 @@ void my_connect_callback(struct mosquitto* mosq, void* userdata, int result)
 		mosquitto_subscribe(mosq, NULL, "test", 2);
 	}
 	else {
-		fprintf(stderr, "Connect failed\n");
 		fprintf(stderr, "Сбой подключения\n");
 	}
 }
