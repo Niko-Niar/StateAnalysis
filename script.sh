@@ -6,7 +6,7 @@ run mosquitto_pub.exe -p 1883 -h localhost -t test -m 0
 sleep 1
 done
 run mosquitto_pub.exe -p 1883 -h localhost -t test -m 'Data" "recording" "started'
-list=(20000 30000 30000 32000 34000 34000 32000 30000 30000 28000)
+list=(12000 32000 34000 34000 36000 36000 36000 34000 34000 12000)
 sleep 1
 for (( b = 0; b <= 9; b++ ))
 do
