@@ -1,5 +1,5 @@
 #!/bin/bash
-cd 'C:\Program Files\mosquitto\'
+cd 'C:\mosquitto\'
 for (( a = 1; a <= 3; a++ ))
 do
 run mosquitto_pub.exe -p 1883 -h localhost -t test -m 0
