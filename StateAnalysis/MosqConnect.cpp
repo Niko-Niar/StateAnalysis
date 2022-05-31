@@ -3,11 +3,64 @@
 #include <stdio.h>
 #include <mosquitto.h>
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+
+#include "BSAnalysis.h"
+
+using namespace std;
+
+int k = 0;
+vector<float> v_1;
+vector<float> v_2;
 
 void my_message_callback(struct mosquitto* mosq, void* userdata, const struct mosquitto_message* message)
 {
-	if (message->payloadlen) {
-		printf("%s\n", message->payload); // Вывод полученного сообщения
+	string str;
+	string path;
+	int n;
+	if(message->payloadlen && k == 0) {
+		str.append((char*)message->payload);
+		n = str.find("store_next_record");
+		if (n > 0)
+		{
+			k = 1;
+			printf("Начало записи\n");
+		}
+	}
+	else if (message->payloadlen && k == 1) {
+		str.append((char*)message->payload);
+		n = str.find("taho_record_ended");
+		if (n > 0)
+		{
+			k = 0;
+			path.append(str.erase(0, str.find("file") + 5));
+			path.erase(path.find("}"));
+			printf("Конец записи и путь: %s\n", path.c_str());
+			ifstream in(path);
+			string number;
+			if (in.is_open())
+			{
+				while (getline(in, number, ' '))
+				{
+					v_2.push_back(atoi(number.c_str()));
+					/*printf("%d\n", atoi(number.c_str()));*/
+				}
+			}
+			in.close();
+
+			Interpolation(v_1, v_2);
+			v_1.clear();
+			v_2.clear();
+		}
+		else
+		{
+			str.erase(0, str.find("value") + 6);
+			str.erase(str.find("}"));
+			printf("Записано значение: %s\n", str.c_str());
+			v_1.push_back(atoi(str.c_str()));
+		}
 	}
 	else {
 		printf("%s (null)\n", message->topic);
@@ -31,7 +84,7 @@ void my_subscribe_callback(struct mosquitto* mosq, void* userdata, int mid, int 
 	printf("Подключение прошло успешно\n");// Вывод сообщения об успешном подключении
 }
 
-int main(int argc, char* argv[])
+int mosq_connect()
 {
 	setlocale(LC_ALL, "Russian");
 	const char* host = "localhost";

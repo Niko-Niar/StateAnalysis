@@ -1,0 +1,12 @@
+prefix=@DEST_DIR@
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include/ormodule
+
+Name: libormodule
+Description: Common classes and methods for Opti-Repair modules.
+Version: 1.0
+
+Requires: libuv
+Libs: -L${libdir} -lormodule -lmosquitto
+Cflags: -I${includedir}

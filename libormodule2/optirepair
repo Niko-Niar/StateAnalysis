@@ -1,0 +1,10 @@
+/var/log/optirepair/*.log {
+	daily
+	missingok
+	rotate 5
+	compress
+	delaycompress
+	notifempty
+	create 640 www-data www-data
+	sharedscripts
+}
