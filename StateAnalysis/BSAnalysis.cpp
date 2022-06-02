@@ -1,20 +1,44 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
+#include <string>
+#include <fstream>
 
 using namespace std;
 
-void analiz(vector<double>& x, bool& chek)
+/* Позиции дефектов */
+vector<int> error_number1, error_number2;
+
+/* Значения дефектов (не использовал) */
+vector<float> error_meaning1, error_meaning2;
+
+/* Если дефекты идут подряд, то обрезаем */
+void Cut(int begin, int end)
 {
-    double sum = 0;
-    double average = 0;
-    int size = x.size();// кол-во элементов в массиве
+    int first = begin, second = end;
+    for (int i = second; i < error_number2.size(); i++)
+    {
+        if (error_number2[i] - error_number2[i - 1] == 1)
+            second = i;
+        else
+            break;
+    }
+    cout << "Дефект c началом на позиции: " << error_number2[first] << " и концом на позиции: " << error_number2[second] << endl;
+    error_number2.erase(error_number2.cbegin() + first + 1, error_number2.cbegin() + second + 1);
+    error_meaning2.erase(error_meaning2.cbegin() + first + 1, error_meaning2.cbegin() + second + 1);
+}
+
+/* Определяем уровень дефекта */
+/* num используется для записи в разные массивы, если true - в первый, если false - во второй (не используется) */
+void Identify(vector<float> x, bool num)
+{
+    float sum = 0;
+    float average = 0;
+    vector<int> number;
+    vector<float> meaning;
 
     for (int i = 0; i < x.size(); i++)
-    {
-        cout << x[i] << endl;
         sum = sum + x[i];
-    }
+
     average = sum / x.size();
     cout << "Среднее значение :" << average << endl;
 
@@ -22,219 +46,201 @@ void analiz(vector<double>& x, bool& chek)
     sum = 0;
     for (int i = 0; i < x.size(); i++)
     {
-        double a = x[i] - average;
-        double aa = a * a;
+        float a = x[i] - average;
+        float aa = a * a;
         sum = sum + aa;
     }
 
-    sum = sum / size;
-    double sigma = sqrt(sum);
-    cout << sigma;
+    sum = sum / x.size();
+    float sigma = sqrt(sum);
+    cout << "Среднеквадратичное отклонение " << sigma << endl;
 
     for (int i = 0; i < x.size(); i++)
     {
-        if (x[i] >= average + sigma)
+        if (x[i] >= average + sigma && x[i] <= average + sigma * 2)
         {
 
-            cout << " слабый выброс : ";
-            cout << x[i] << endl;
-
+            cout << "Cлабый дефект : " << x[i] << endl;
+            number.push_back(i);
+            meaning.push_back(x[i]);
         }
 
-        if (x[i] >= average + sigma * 2)
+        if (x[i] >= average + sigma * 2 && x[i] <= average + sigma * 3)
         {
-            cout << " средний выброс :";
-            cout << x[i] << endl;
-
-
+            cout << "Cредний дефект :" << x[i] << endl;
+            number.push_back(i);
+            meaning.push_back(x[i]);
         }
 
         if ((x[i] >= average + sigma * 3))
         {
-            cout << " сильный выброс :";
-            cout << x[i] << endl;
-
-
+            cout << "Cильный дефект :" << x[i] << endl;
+            number.push_back(i);
+            meaning.push_back(x[i]);
         }
-
     }
-    if (bool chek = true)
+
+    if (num == true)
     {
-        chek = false;
+        error_number1 = number;
+        error_meaning1 = meaning;
     }
-    else chek = true;
-
+    else
+    {
+        error_number2 = number;
+        error_meaning2 = meaning;
+    }
+    cout << "Количество дефектов: " << number.size() << endl;
 }
 
-void new_vektor(vector<double>& x, vector<double>& x_new)
+/* Сглаживание значений */
+vector<float> NewVektor(vector<float> x, vector<float> x_new)
 {
     for (int i = 0; i < x.size(); i++)
-    {
         x[i] = (x[i] + x_new[i]) / 2;
-
-    }
-
+    return x;
 }
 
-void check(vector<double>& x, bool& chek)
+/* Переворот вектора */
+vector<float> Check(vector<float>x)
 {
-    vector<double> x_1;
-    if (chek = true) {
-
-    }
-    else {
-        for (int i = x.size(); i != -1; i--)
-        {
-            x_1[i] = x[i];
-        }
-
-        for (int i = 0; i < x.size(); i++)
-        {
-            x[i] = x_1[i];
-        }
-    }
-
-}
-
-void main1(vector<float> v)
-{
-    setlocale(LC_ALL, "ru");
-    bool chek = true;
-    vector<double> x;
-    for (int i = 0; i < v.size(); i++)
+    vector<float> x_1;
+    for (int i = 0; i < x.size(); i++)
     {
-        x.push_back(double(v[i]));
+        x_1.push_back(x[x.size() - i - 1]);
+        }
+    x.clear();
+    for (int i = 0; i < x_1.size(); i++)
+    {
+        x.push_back(x_1[x_1.size() - i - 1]);
     }
-    /*x.push_back(170);
-    x.push_back(175);
-    x.push_back(167);
-    x.push_back(169);
-    x.push_back(173);
-    x.push_back(176);*/
-
-
-    /*vector<int> y;
-    y.push_back(5000);
-    y.push_back(4000);
-    y.push_back(3000);
-    y.push_back(700);
-    y.push_back(432);
-    y.push_back(1234);*/
-
-    analiz(x, chek);
-
-
-
-    /*vector<double> x_new;*/
-    /*x_new.push_back(177);
-    x_new.push_back(171);
-    x_new.push_back(165);
-    x_new.push_back(165);
-    x_new.push_back(179);
-    x_new.push_back(171);*/
-
-
-    /*vector<int> y_new;
-    y_new.push_back(5600);
-    y_new.push_back(4040);
-    y_new.push_back(3010);
-    y_new.push_back(703);
-    y_new.push_back(436);
-    y_new.push_back(1235);*/
-
-    /*new_vektor(x, x_new);
-    check(x, chek);
-    analiz(x, chek);*/
-
-
+    return x;
 }
 
-vector<float> Filtr(vector<float> in, vector<float> out) {
-    if (in.size() % 3 == 0) {
-        for (int i = 3; i < in.size(); i += 3) {
-            out.push_back((in[i - 3] + in[i - 2] + in[i - 1]) / 3);
-        }
-    }
-    else {
-        int n = in.size() - (in.size() / 3) * 3;
-        for (int i = 3; i < in.size(); i += 3) {
-            out.push_back((in[i - 3] + in[i - 2] + in[i - 1]) / 3);
-        }
-        int check = 0;
-        float h = 0;
-        for (int i = in.size() - n; i < in.size(); i++) {
-            check++;
-            h += in[i];
-        }
-        out.push_back(h / check);
-    }
-    return out;
-}
-
-void Interpolation(vector<float> v_1, vector<float> v_2)
+/* Определение типа ошибки */
+void ErrorType()
 {
-    float del;
-    vector<float> m_1 = v_1;
-    vector<float> m_2 = v_2;
-    vector<float> filt_m_1;
-    vector<float> filt_m_2;
-    vector<int> y_1;
-    vector<int> y_2;
-    vector<float> result;
+    /* Дефект всего 1 */
+    if (error_number2.size() == 1)
+        cout << "Дефект на винте, позиция: " << error_number2[0] << endl;
 
-    filt_m_1 = Filtr(m_1, filt_m_1);
-    filt_m_2 = Filtr(m_2, filt_m_2);
+    /* Проверяем нет ли дефектов подряд, если есть вырезаем */
+    int interval = error_number2[1] - error_number2[0];
+    if (interval == 1)
+        Cut(0, 1);
 
-    int size_1 = filt_m_1.size();
-    int size_2 = filt_m_2.size();
+    if (error_number2.size() == 1)
+        cout << "Дефект на винте, позиция: " << error_number2[0] << endl;
+    else
+    {
+        int x = -10; // погрешность 
+        interval = error_number2[1] - error_number2[0];
+        
+        bool flag = true;
+        int Check = 0;
 
-
-    if (size_2 > size_1) {
-        y_1.push_back(1);
-
-        if (size_2 % size_1 > 4)
-            del = size_2 / size_1 + 1;
-        else del = size_2 / size_1;
-
-        int check = 1;
-
-        for (int i = del; i < size_2 + 1; ) {
-            if (check == size_1 - 1)
-                y_1.push_back(size_2);
-            y_1.push_back(i + 1);
-            i += del;
-            check++;
-        }
-
-        for (int i = 1; i < size_2 + 1; i++) {
-            y_2.push_back(i);
-        }
-
-        int counter = 0;
-        result.push_back(filt_m_1[0]);
-        for (int i = 1; i < size_2; i++) {
-            int up_dist = y_2[i];
-            int down_dist = y_1[counter + 1];
-            if (down_dist > up_dist)
-                result.push_back(filt_m_1[counter] + (filt_m_1[counter + 1] - filt_m_1[counter]) / (y_1[counter + 1] - y_1[counter]) * (y_2[i] - y_1[counter]));
+        /* Проверяем на одинаковое растояние между дефектами */
+        for (int i = 1; i < error_number2.size() - 1; i++)
+        {
+            if (error_number2[i + 1] - error_number2[i] == 1)
+                Cut(i, i + 1);
+            if (i == error_number2.size() - 1)
+                break;
             else
-                result.push_back(filt_m_1[counter + 1]);
-
-            if (y_2[i] >= y_1[counter + 1])
-                counter++;
+            {
+                for (x = -10; x < 11; x++)
+                {
+                    int n1 = error_number2[i];
+                    int n2 = error_number2[i + 1] - interval;
+                    if (error_number2[i] == error_number2[i + 1] - interval + x)
+                    {
+                        cout << "Одинаковый промежуток между дефектами " << i + 1 << " и " << i + 2 << endl;
+                        Check++;
+                        break;
+                    }
+                }
+                if (Check == 0)
+                {
+                    flag = false;
+                    break;
+                }
+                Check = 0;
+            }
         }
-
-        /*for (int i = 0; i < size_1; i++) {
-            cout << y_1[i];
+        
+        /* Если расстояние одинаковое, то дефект на гайке */
+        if (flag == true)
+        {
+            cout << "Дефекты на гайке, на позициях: ";
+            for (int i = 0; i < error_number2.size(); i++)
+            {
+                cout << error_number2[i] << ", ";
+            }
+            cout << endl;
         }
-        for (int i = 0; i < size_1; i++) {
-            cout << y_2[i];
-        }*/
+        /* Если расстояние разное, то дефект на винте */
+        else
+        {
+            cout << "Дефекты на винте, на позициях: ";
+            for (int i = 0; i < error_number2.size(); i++)
+            {
+                cout << error_number2[i] << " ";
+            }
+            cout << endl;
+        }
+    }
+}
 
-        /*for (int i = 0; i < result.size(); i++) {
-            cout << result[i] << "\n";
-        }*/
-        main1(result);
+void Analysis(vector<float> result, int num)
+{
+    int n = num;
+    setlocale(LC_ALL, "ru");
+    vector<float> x = result, x_old;
+
+    /* Если первый прогон, то создаем файлик в который будем записывать полученные значения */
+    if (n == 1)
+    {
+        x_old = x;
+
+        ofstream fout("lcs.txt");
+        if (fout.is_open())
+            for (int i = 0; i < x.size(); i++)
+                fout << x[i] << " ";
+        fout.close();
+    }
+    /* Если не первый, то считываем */
+    else
+    {
+        ifstream in("lcs.txt");
+        string number;
+        if (in.is_open())
+        {
+            while (getline(in, number, ' '))
+            {
+                x_old.push_back(atoi(number.c_str()));
+                /*printf("%d\n", atoi(number.c_str()));*/
+            }
+        }
+        in.close();
     }
 
+    /* Если четный прогон, то отправляем на разворот */
+    if (n % 2 == 0)
+        x = Check(x);;
+
+    x = NewVektor(x, x_old);
+
+    ofstream fout("lcs.txt");
+    if (fout.is_open())
+        for (int i = 0; i < x.size(); i++)
+            fout << x[i] << " ";
+    fout.close();
+
+    //Identify(x_old, true);
+    Identify(x, false);
+    
+    if (error_number2.size() == 0)
+        cout << "Дефекты не обнаружены" << endl;
+    else
+        ErrorType();
 }

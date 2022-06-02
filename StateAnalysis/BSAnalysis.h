@@ -5,14 +5,16 @@
 
 using namespace std;
 
-vector<float> Filtr(vector<float> in, vector<float> out);
+void Cut(int begin, int end);
 
-void Interpolation(vector<float> v_1, vector<float> v_2);
+void Identify(vector<float> x, bool num);
 
-void analiz(vector<float>& x, bool& chek);
+vector<float> NewVektor(vector<float> x, vector<float> x_new);
 
-void new_vektor(vector<float>& x, vector<float>& x_new);
+vector<float> Check(vector<float> x);
 
-void check(vector<float>& x, bool& chek);
+void ErrorType();
+
+void Analysis(vector<float> result, int num);
 
 #endif
