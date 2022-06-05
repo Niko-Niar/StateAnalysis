@@ -33,7 +33,7 @@ void DataReading(char* message)
 
 	/* Если еще не было сообщения о начале заходим сюда */
 	if (flag == false) {
-		printf("%s\n", str.c_str());
+		/*printf("%s\n", str.c_str());*/
 
 		if (object["action"] != nullptr)
 		{
@@ -47,7 +47,7 @@ void DataReading(char* message)
 	}
 	/* Если уже получили сообщение о начале */
 	else if (flag == true) {
-		printf("%s\n", str.c_str());
+		/*printf("%s\n", str.c_str());*/
 
 		/* Проверяем на сообщение о конце записи */
 		if (object["action"] != nullptr)
@@ -57,7 +57,7 @@ void DataReading(char* message)
 			{
 				flag = false;
 				path = object["data"]["file"];
-				cout << "Конец записи и путь: %s\n" << path << endl;
+				cout << "Конец записи и путь: " << path << endl;
 
 				/* Читаем файлик с данными */
 				ifstream in(path);

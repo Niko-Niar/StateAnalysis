@@ -129,9 +129,9 @@ vector<float> Conversion(vector<float> v_1, vector<float> v_2)
     result.clear();
     result = Resize(m_1, m_2);
 
-    for (int i = 0; i < result.size(); i++) {
+    /*for (int i = 0; i < result.size(); i++) {
         cout << result[i] << "\n";
-    }
+    }*/
 
     return result;
 }

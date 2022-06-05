@@ -116,13 +116,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\reon2\source\repos\StateAnalysis\libormodule2\brocker;C:\Users\reon2\source\repos\StateAnalysis\libormodule2\database;C:\Users\reon2\source\repos\StateAnalysis\libormodule2\datatypes;C:\Users\reon2\source\repos\StateAnalysis\libuv\include;C:\Users\reon2\source\repos\StateAnalysis\libormodule2;C:\Users\reon2\source\repos\StateAnalysis\Subscribe;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\reon2\source\repos\StateAnalysis\libormodule2;C:\Users\reon2\source\repos\StateAnalysis\libuv\include;C:\Users\reon2\source\repos\StateAnalysis\Subscribe;C:\Users\reon2\source\repos\StateAnalysis\libormodule2\brocker;C:\Users\reon2\source\repos\StateAnalysis\libormodule2\database;C:\Users\reon2\source\repos\StateAnalysis\libormodule2\datatypes;C:\Users\reon2\source\repos\StateAnalysis\libuv\include;C:\Users\reon2\source\repos\StateAnalysis\libormodule2;C:\Users\reon2\source\repos\StateAnalysis\Subscribe;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\reon2\source\repos\StateAnalysis\Subscribe;C:\Users\reon2\source\repos\StateAnalysis\libuv;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mosquitto.lib;libuv.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\reon2\source\repos\StateAnalysis\Subscribe;C:\Users\reon2\source\repos\StateAnalysis\libuv;C:\Users\reon2\source\repos\StateAnalysis\Subscribe;C:\Users\reon2\source\repos\StateAnalysis\libuv;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mosquitto.lib;libuv.lib;mosquitto.lib;libuv.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -133,12 +133,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\reon2\source\repos\StateAnalysis\libormodule2;C:\Users\reon2\source\repos\StateAnalysis\libuv\include;C:\Users\reon2\source\repos\StateAnalysis\Subscribe;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\reon2\source\repos\StateAnalysis\Subscribe;C:\Users\reon2\source\repos\StateAnalysis\libuv;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mosquitto.lib;libuv.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -174,7 +174,7 @@ void ErrorType()
             cout << "Дефекты на гайке, на позициях: ";
             for (int i = 0; i < error_number2.size(); i++)
             {
-                cout << error_number2[i] << ", ";
+                cout << error_number2[i] << " ";
             }
             cout << endl;
         }
